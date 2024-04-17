@@ -10,4 +10,5 @@ public class CommunityConnectApplication {
 		SpringApplication.run(CommunityConnectApplication.class, args);
 	}
 
+
 }
