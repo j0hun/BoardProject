@@ -20,14 +20,14 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member addMember(MemberFormDTO memberFormDTO) {
+    public void addMember(MemberFormDTO memberFormDTO) {
         Member findMember = memberRepository.findByEmail(memberFormDTO.getEmail());
         if (findMember != null) {
             throw new IllegalArgumentException("이미 가입된 회원입니다.");
         }
         memberFormDTO.setPassword(passwordEncoder.encode(memberFormDTO.getPassword()));
         Member member = memberFormDTO.toEntity();
-        return memberRepository.save(member);
+        memberRepository.save(member);
     }
 
     @Override

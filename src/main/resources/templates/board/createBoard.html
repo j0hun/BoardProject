@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<div layout:fragment="content">
+    <div class="container my-5">
+        <div class="header mb-5">
+            <h1 class="text-center">게시글 추가</h1>
+        </div>
+        <form th:action="@{/boards/createBoard}" method="post">
+            <div class="mb-3">
+                <label for="title">게시글 제목</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        name="title"
+                        required
+                />
+            </div>
+            <div class="mb-3">
+                <label for="content">내용</label>
+                <textarea
+                        class="form-control"
+                        id="content"
+                        name="content"
+                        placeholder="내용 입력"
+                ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">업로드</button>
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="window.history.back();"
+            >
+                취소
+            </button>
+        </form>
+    </div>
+</div>
+</html>

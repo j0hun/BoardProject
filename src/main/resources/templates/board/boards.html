@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<div layout:fragment="content">
+    <div class="container my-5">
+        <a class="btn btn-primary mb-3" th:href="@{/boards/createBoard}">글쓰기</a>
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>수정일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
+                <td th:text="${board.memberName}"></td>
+                <td>
+                    <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </td>
+                <td>
+                    <span th:text="${#temporals.format(board.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

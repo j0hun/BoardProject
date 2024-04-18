@@ -28,7 +28,7 @@ public class MemberFormDTO {
     private String address;
 
     public Member toEntity() {
-        return new Member(this.name,this.email,this.password,this.address, Role.ADMIN);
+        return new Member(this.name,this.email,this.password,this.address, Role.USER);
     }
 
 }
