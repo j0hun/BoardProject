@@ -27,4 +27,22 @@ public class Comment extends BaseEntity{
     @JoinColumn(name = "board_id")
     private Board board;
 
+    public void setBoard(Board board) {
+        this.board = board;
+        if(board != null) {
+            board.getCommentList().add(this);
+        }
+    }
+
+    public void setMember(Member member){
+        this.member = member;
+        if(member != null) {
+            member.getCommentList().add(this);
+        }
+    }
+
+    public void updateComment(Comment comment) {
+        this.content = comment.getContent();
+    }
+
 }

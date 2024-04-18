@@ -1,6 +1,6 @@
 package com.jyhun.CommunityConnect.service;
 
-import com.jyhun.CommunityConnect.dto.MemberFormDTO;
+import com.jyhun.CommunityConnect.dto.MemberRequestDTO;
 import com.jyhun.CommunityConnect.entity.Member;
 import com.jyhun.CommunityConnect.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void addMember(MemberFormDTO memberFormDTO) {
-        Member findMember = memberRepository.findByEmail(memberFormDTO.getEmail());
+    public void addMember(MemberRequestDTO memberRequestDTO) {
+        Member findMember = memberRepository.findByEmail(memberRequestDTO.getEmail());
         if (findMember != null) {
             throw new IllegalArgumentException("이미 가입된 회원입니다.");
         }
-        memberFormDTO.setPassword(passwordEncoder.encode(memberFormDTO.getPassword()));
-        Member member = memberFormDTO.toEntity();
+        memberRequestDTO.setPassword(passwordEncoder.encode(memberRequestDTO.getPassword()));
+        Member member = memberRequestDTO.toEntity();
         memberRepository.save(member);
     }
 

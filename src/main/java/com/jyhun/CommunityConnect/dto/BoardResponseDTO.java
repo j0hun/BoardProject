@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -16,6 +18,7 @@ public class BoardResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String memberName;
+    private List<CommentResponseDTO> commentResponseDTOList;
 
     public static BoardResponseDTO toDTO(Board board){
         BoardResponseDTO boardResponseDTO = new BoardResponseDTO();
@@ -25,6 +28,13 @@ public class BoardResponseDTO {
         boardResponseDTO.setCreatedAt(board.getCreatedAt());
         boardResponseDTO.setUpdatedAt(board.getUpdatedAt());
         boardResponseDTO.setMemberName(board.getMember().getName());
+        if (board.getCommentList() != null) {
+            boardResponseDTO.setCommentResponseDTOList(
+                    board.getCommentList().stream()
+                            .map(CommentResponseDTO::toDTO)
+                            .collect(Collectors.toList())
+            );
+        }
         return boardResponseDTO;
     }
 

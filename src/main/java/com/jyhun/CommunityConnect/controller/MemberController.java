@@ -1,6 +1,6 @@
 package com.jyhun.CommunityConnect.controller;
 
-import com.jyhun.CommunityConnect.dto.MemberFormDTO;
+import com.jyhun.CommunityConnect.dto.MemberRequestDTO;
 import com.jyhun.CommunityConnect.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +20,19 @@ public class MemberController {
 
     @GetMapping("/signup")
     public String signupView(Model model) {
-        model.addAttribute("memberFormDTO", new MemberFormDTO());
+        model.addAttribute("member", new MemberRequestDTO());
         return "member/signup";
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid MemberFormDTO memberFormDTO, BindingResult bindingResult, Model model) {
+    public String signup(@Valid MemberRequestDTO memberRequestDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "member/signup";
         }
 
         try {
-            memberService.addMember(memberFormDTO);
+            memberService.addMember(memberRequestDTO);
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "member/signup";

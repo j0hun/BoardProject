@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout}">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <div layout:fragment="content">
     <div class="container my-5">
 
@@ -23,13 +27,172 @@
                         </p>
                     </div>
                     <div>
-                        <a th:href="@{/boards/{id}/editBoard(id=${board.id})}" class="btn btn-secondary btn-sm mb-2">수정</a>
-                        <a th:href="@{/boards/{id}/deleteBoard(id=${board.id})}" class="btn btn-danger btn-sm">삭제</a>
+                        <a th:href="@{/boards/{id}/editBoard(id=${board.id})}" class="btn btn-primary btn-sm">수정</a>
+                        <button class="btn btn-danger btn-sm" th:onclick="|deleteBoard(${board.id})|">삭제</button>
                     </div>
                 </div>
                 <p class="card-text" th:text="${board.content}">게시글 내용</p>
             </div>
         </div>
+        <div class="card border-0 shadow-sm mt-5">
+            <div class="card-body">
+                <h3 class="card-title mb-4">댓글</h3>
+                <div class="container">
+                    <input type="text" id="commentInput" class="form-control mb-3" placeholder="댓글을 입력하세요">
+                    <button onclick="postComment()" class="btn btn-primary">댓글 작성</button>
+                </div>
+                <!-- 댓글 수정 모달 창 -->
+                <div class="modal fade" id="commentUpdateModal" tabindex="-1" aria-labelledby="commentUpdateModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="commentUpdateModalLabel">댓글 수정</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" id="updatedCommentInput"
+                                       placeholder="댓글을 수정하세요">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="updateComment()">수정 완료</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 수정 버튼 클릭 시 모달 창 열기 -->
+                <ul id="commentList" class="list-group list-group-flush mt-4">
+                    <li class="list-group-item" th:each="comment : ${comments}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span th:text="'작성자: ' + ${comment.memberName}"></span>
+                                <span th:text="'작성일: ' + ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                <p class="mb-0" th:text="${comment.content}">댓글 내용</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary btn-sm" th:onclick="|updateCommentModal(${comment.id})|">
+                                    수정
+                                </button>
+                                <button class="btn btn-danger btn-sm" th:onclick="|deleteComment(${comment.id})|">삭제
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
+
+    <script th:inline="javascript">
+        function deleteBoard(boardId) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            if (confirm("게시글을 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/boards/' + boardId,
+                    type: 'DELETE',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (data) {
+                        alert('게시글이 삭제되었습니다.');
+                        window.location.href = '/boards'; // 게시판 목록 페이지로 이동
+                    },
+                    error: function () {
+                        alert('게시글 삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script th:inline="javascript">
+        function postComment() {
+            var boardId = [[${board.id}]];
+            var comment = $('#commentInput').val();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            $.ajax({
+                url: '/boards/' + boardId,
+                type: 'POST',
+                data: JSON.stringify({content: comment}),
+                beforeSend: function (xhr) {
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/json',
+                success: function (data) {
+                    alert('댓글이 추가 되었습니다.');
+                    location.reload();
+                },
+                error: function () {
+                    alert('오류가 나왔습니다.');
+                }
+            });
+        }
+    </script>
+
+
+    <script th:inline="javascript">
+        function updateCommentModal(commentId) {
+            $('#commentUpdateModal').modal('show');
+            $('#updatedCommentInput').val(''); // 모달 창 열 때마다 입력 필드 초기화
+            window.commentIdToUpdate = commentId; // 전역 변수에 댓글 ID 저장
+        }
+
+        function updateComment() {
+            var updatedComment = $('#updatedCommentInput').val();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            $.ajax({
+                url: '/comments/' + window.commentIdToUpdate,
+                type: 'PATCH',
+                data: JSON.stringify({content: updatedComment}),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                contentType: 'application/json',
+                success: function (data) {
+                    alert('댓글이 성공적으로 수정되었습니다.');
+                    $('#commentUpdateModal').modal('hide');
+                    location.reload();
+                },
+                error: function () {
+                    alert('댓글을 수정하는 중에 오류가 발생했습니다.');
+                }
+            });
+        }
+    </script>
+
+    <script th:inline="javascript">
+        function deleteComment(commentId) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            if (confirm("댓글을 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/comments/' + commentId,
+                    type: 'DELETE',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (data) {
+                        alert('댓글이 삭제되었습니다.');
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('댓글 삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
+    </script>
+
 </div>
 </html>

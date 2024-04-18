@@ -40,11 +40,11 @@ public class BoardService {
         return boardResponseDTO;
     }
 
-    public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String name) {
+    public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String email) {
         Board board = boardRequestDTO.toEntity();
+        Member member = memberRepository.findByEmail(email);
+        board.setMember(member);
         Board savedBoard = boardRepository.save(board);
-        Member member = memberRepository.findByName(name);
-        savedBoard.setMember(member);
         BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(savedBoard);
         return boardResponseDTO;
     }
