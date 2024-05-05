@@ -15,7 +15,6 @@ public class MemberResponseDTO {
     private Long id;
     private String name;
     private String email;
-    private String password;
     private String address;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -26,7 +25,6 @@ public class MemberResponseDTO {
         MemberResponseDTO memberResponseDTO = new MemberResponseDTO();
         memberResponseDTO.setId(member.getId());
         memberResponseDTO.setName(member.getName());
-        memberResponseDTO.setPassword(member.getPassword());
         memberResponseDTO.setAddress(member.getAddress());
         memberResponseDTO.setCreatedAt(member.getCreatedAt());
         memberResponseDTO.setUpdatedAt(member.getUpdatedAt());

@@ -1,6 +1,7 @@
 package com.jyhun.CommunityConnect;
 
 import com.jyhun.CommunityConnect.repository.BoardRepository;
+import com.jyhun.CommunityConnect.repository.CommentRepository;
 import com.jyhun.CommunityConnect.repository.MemberRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,8 +19,8 @@ public class CommunityConnectApplication {
 
 	@Bean
 	@Profile("local")
-	public DataInit boardDataInit(BoardRepository boardRepository, MemberRepository memberRepository) {
-		return new DataInit(boardRepository,memberRepository);
+	public DataInit boardDataInit(BoardRepository boardRepository, MemberRepository memberRepository, CommentRepository commentRepository) {
+		return new DataInit(boardRepository, memberRepository, commentRepository);
 	}
 
 }

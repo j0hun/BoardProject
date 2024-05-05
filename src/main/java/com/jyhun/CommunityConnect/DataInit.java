@@ -2,8 +2,10 @@ package com.jyhun.CommunityConnect;
 
 import com.jyhun.CommunityConnect.constant.Role;
 import com.jyhun.CommunityConnect.entity.Board;
+import com.jyhun.CommunityConnect.entity.Comment;
 import com.jyhun.CommunityConnect.entity.Member;
 import com.jyhun.CommunityConnect.repository.BoardRepository;
+import com.jyhun.CommunityConnect.repository.CommentRepository;
 import com.jyhun.CommunityConnect.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,14 +18,19 @@ public class DataInit {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        Member member = new Member("name","email","password","address", Role.ADMIN);
+        Member member = new Member("name","email@email.com","password","address", Role.ADMIN);
         memberRepository.save(member);
         Board board = new Board("title","content");
-        board.setMember(member);
+        board.changeMember(member);
         boardRepository.save(board);
+        Comment comment = new Comment("comment");
+        comment.changeBoard(board);
+        comment.changeMember(member);
+        commentRepository.save(comment);
     }
 
 }

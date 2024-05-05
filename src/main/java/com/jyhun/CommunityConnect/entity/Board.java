@@ -24,11 +24,11 @@ public class Board extends BaseEntity{
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     public Board(String title, String content) {
@@ -36,7 +36,7 @@ public class Board extends BaseEntity{
         this.content = content;
     }
 
-    public void setMember(Member member) {
+    public void changeMember(Member member) {
         this.member = member;
         member.getBoardList().add(this);
     }

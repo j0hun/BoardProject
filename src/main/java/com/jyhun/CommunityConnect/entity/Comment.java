@@ -19,22 +19,22 @@ public class Comment extends BaseEntity{
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public void setBoard(Board board) {
+    public void changeBoard(Board board) {
         this.board = board;
         if(board != null) {
             board.getCommentList().add(this);
         }
     }
 
-    public void setMember(Member member){
+    public void changeMember(Member member){
         this.member = member;
         if(member != null) {
             member.getCommentList().add(this);
@@ -45,4 +45,7 @@ public class Comment extends BaseEntity{
         this.content = comment.getContent();
     }
 
+    public Comment(String content) {
+        this.content = content;
+    }
 }

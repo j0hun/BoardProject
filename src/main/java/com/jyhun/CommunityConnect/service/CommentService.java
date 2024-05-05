@@ -40,8 +40,8 @@ public class CommentService {
         Comment comment = commentRequestDTO.toEntity();
         Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
         Member member = memberRepository.findByEmail(email);
-        comment.setBoard(board);
-        comment.setMember(member);
+        comment.changeBoard(board);
+        comment.changeMember(member);
         Comment savedComment = commentRepository.save(comment);
         CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(savedComment);
         return commentResponseDTO;

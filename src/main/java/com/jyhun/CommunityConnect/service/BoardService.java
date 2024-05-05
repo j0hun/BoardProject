@@ -43,7 +43,7 @@ public class BoardService {
     public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String email) {
         Board board = boardRequestDTO.toEntity();
         Member member = memberRepository.findByEmail(email);
-        board.setMember(member);
+        board.changeMember(member);
         Board savedBoard = boardRepository.save(board);
         BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(savedBoard);
         return boardResponseDTO;
