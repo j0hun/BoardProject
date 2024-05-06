@@ -49,6 +49,12 @@ public class BoardService {
         return boardPage.map(board -> BoardResponseDTO.toDTO(board));
     }
 
+    @Transactional
+    public void viewCountUp(Long boardId){
+        Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        board.view();
+    }
+
     public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String email) {
         Board board = boardRequestDTO.toEntity();
         Member member = memberRepository.findByEmail(email);

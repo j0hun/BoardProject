@@ -12,6 +12,7 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
+                    <th>조회수</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,6 +22,9 @@
                     <td th:text="${board.memberName}"></td>
                     <td>
                         <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${board.viewCount}"></span>
                     </td>
                 </tr>
                 </tbody>

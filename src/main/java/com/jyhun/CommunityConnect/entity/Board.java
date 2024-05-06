@@ -22,6 +22,8 @@ public class Board extends BaseEntity {
 
     private String content;
 
+    private int viewCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -33,6 +35,10 @@ public class Board extends BaseEntity {
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void view(){
+        this.viewCount+=1;
     }
 
     public void changeMember(Member member) {

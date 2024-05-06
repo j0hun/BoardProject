@@ -15,6 +15,7 @@ public class BoardResponseDTO {
     private Long id;
     private String title;
     private String content;
+    private int viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String memberName;
@@ -25,6 +26,7 @@ public class BoardResponseDTO {
         boardResponseDTO.setId(board.getId());
         boardResponseDTO.setTitle(board.getTitle());
         boardResponseDTO.setContent(board.getContent());
+        boardResponseDTO.setViewCount(board.getViewCount());
         boardResponseDTO.setCreatedAt(board.getCreatedAt());
         boardResponseDTO.setUpdatedAt(board.getUpdatedAt());
         boardResponseDTO.setMemberName(board.getMember().getName());

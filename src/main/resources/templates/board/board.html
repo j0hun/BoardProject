@@ -23,7 +23,7 @@
                             작성일: <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
                         </p>
                         <p class="card-text text-muted">
-                            수정일: <span th:text="${#temporals.format(board.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            조회수: <span th:text="${board.viewCount}"></span>
                         </p>
                     </div>
                     <div>

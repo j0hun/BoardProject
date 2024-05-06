@@ -39,6 +39,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public String getBoard(@PathVariable Long boardId, Model model) {
         BoardResponseDTO board = boardService.findBoardById(boardId);
+        boardService.viewCountUp(boardId);
         List<CommentResponseDTO> comments = commentService.findCommentsByBoardId(boardId);
         model.addAttribute("comments",comments);
         model.addAttribute("board",board);
