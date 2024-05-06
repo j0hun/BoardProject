@@ -2,7 +2,7 @@ package com.jyhun.CommunityConnect.entity;
 
 import com.jyhun.CommunityConnect.constant.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Member extends BaseEntity{
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +36,7 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @Builder
     public Member(String name, String email, String password, String address, Role role) {
         this.name = name;
         this.email = email;

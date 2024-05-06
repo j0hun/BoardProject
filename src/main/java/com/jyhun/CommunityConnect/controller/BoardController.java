@@ -2,11 +2,14 @@ package com.jyhun.CommunityConnect.controller;
 
 import com.jyhun.CommunityConnect.dto.BoardRequestDTO;
 import com.jyhun.CommunityConnect.dto.BoardResponseDTO;
+import com.jyhun.CommunityConnect.dto.BoardSearchDTO;
 import com.jyhun.CommunityConnect.dto.CommentResponseDTO;
 import com.jyhun.CommunityConnect.service.BoardService;
 import com.jyhun.CommunityConnect.service.CommentService;
 import com.jyhun.CommunityConnect.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +28,11 @@ public class BoardController {
     private final CommentService commentService;
 
     @GetMapping
-    public String getBoards(Model model){
-        List<BoardResponseDTO> boards = boardService.findBoards();
+    public String getBoards(BoardSearchDTO boardSearchDTO, Pageable pageable, Model model){
+        Page<BoardResponseDTO> boards = boardService.findBoardPage(boardSearchDTO, pageable);
         model.addAttribute("boards",boards);
+        model.addAttribute("boardSearchDTO",boardSearchDTO);
+        model.addAttribute("maxPage",5);
         return "board/boards";
     }
 

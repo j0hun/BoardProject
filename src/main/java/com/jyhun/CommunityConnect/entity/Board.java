@@ -1,7 +1,7 @@
 package com.jyhun.CommunityConnect.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +11,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Board extends BaseEntity{
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +29,7 @@ public class Board extends BaseEntity{
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @Builder
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
@@ -38,7 +37,9 @@ public class Board extends BaseEntity{
 
     public void changeMember(Member member) {
         this.member = member;
-        member.getBoardList().add(this);
+        if(member != null) {
+            member.getBoardList().add(this);
+        }
     }
 
     public void updateBoard(Board board){

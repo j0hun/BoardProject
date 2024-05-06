@@ -2,12 +2,15 @@ package com.jyhun.CommunityConnect.service;
 
 import com.jyhun.CommunityConnect.dto.BoardRequestDTO;
 import com.jyhun.CommunityConnect.dto.BoardResponseDTO;
+import com.jyhun.CommunityConnect.dto.BoardSearchDTO;
 import com.jyhun.CommunityConnect.entity.Board;
 import com.jyhun.CommunityConnect.entity.Member;
 import com.jyhun.CommunityConnect.repository.BoardRepository;
 import com.jyhun.CommunityConnect.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +41,12 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
         BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(board);
         return boardResponseDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardResponseDTO> findBoardPage(BoardSearchDTO boardSearchDTO, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findBoardPage(boardSearchDTO, pageable);
+        return boardPage.map(board -> BoardResponseDTO.toDTO(board));
     }
 
     public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String email) {
