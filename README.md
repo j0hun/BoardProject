@@ -5,5 +5,6 @@
 <li> JPA Auditing 기능 구현</li>
 <li> 페이징 처리 기능 구현</li>
 <li> 조회수 기능 구현</li>
+<li> 회원 API 성능 최적화</li>
 </ul>
 

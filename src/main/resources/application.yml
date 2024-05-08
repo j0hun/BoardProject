@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/communitydb
+    username: root
+    password: root
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
