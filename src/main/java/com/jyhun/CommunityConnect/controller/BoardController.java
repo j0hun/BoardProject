@@ -6,25 +6,26 @@ import com.jyhun.CommunityConnect.dto.BoardSearchDTO;
 import com.jyhun.CommunityConnect.dto.CommentResponseDTO;
 import com.jyhun.CommunityConnect.service.BoardService;
 import com.jyhun.CommunityConnect.service.CommentService;
-import com.jyhun.CommunityConnect.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/boards")
 public class BoardController {
 
     private final BoardService boardService;
-    private final MemberService memberService;
     private final CommentService commentService;
 
     @GetMapping
@@ -39,7 +40,6 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public String getBoard(@PathVariable Long boardId, Model model) {
         BoardResponseDTO board = boardService.findBoardById(boardId);
-        boardService.viewCountUp(boardId);
         List<CommentResponseDTO> comments = commentService.findCommentsByBoardId(boardId);
         model.addAttribute("comments",comments);
         model.addAttribute("board",board);
@@ -52,8 +52,9 @@ public class BoardController {
     }
 
     @PostMapping("/createBoard")
-    public String createBoard(BoardRequestDTO boardRequestDTO, Model model, Principal principal){
-        String email = principal.getName();
+    public String createBoard(BoardRequestDTO boardRequestDTO, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
         BoardResponseDTO board = boardService.addBoard(boardRequestDTO,email);
         model.addAttribute("board",board);
         return "redirect:/boards";

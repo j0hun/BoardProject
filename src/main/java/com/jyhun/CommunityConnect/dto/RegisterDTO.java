@@ -1,5 +1,6 @@
 package com.jyhun.CommunityConnect.dto;
 
+
 import com.jyhun.CommunityConnect.constant.Role;
 import com.jyhun.CommunityConnect.entity.Member;
 import jakarta.validation.constraints.Email;
@@ -11,7 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
-public class MemberRequestDTO {
+public class RegisterDTO {
 
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;

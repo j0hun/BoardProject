@@ -2,10 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout}">
-<head>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-</head>
 <div layout:fragment="content">
     <div class="container my-5">
 
@@ -27,8 +23,12 @@
                         </p>
                     </div>
                     <div>
-                        <a th:href="@{/boards/{id}/editBoard(id=${board.id})}" class="btn btn-primary btn-sm">수정</a>
-                        <button class="btn btn-danger btn-sm" th:onclick="|deleteBoard(${board.id})|">삭제</button>
+                        <a th:href="@{/boards/{id}/editBoard(id=${board.id})}"
+                           class="btn btn-primary btn-sm"
+                           th:if="${board.memberName == user}">수정</a>
+                        <button class="btn btn-danger btn-sm"
+                                th:if="${board.memberName == user}"
+                                th:onclick="|deleteBoard(${board.id})|">삭제</button>
                     </div>
                 </div>
                 <p class="card-text" th:text="${board.content}">게시글 내용</p>
@@ -73,11 +73,10 @@
                                 <p class="mb-0" th:text="${comment.content}">댓글 내용</p>
                             </div>
                             <div>
-                                <button class="btn btn-primary btn-sm" th:onclick="|updateCommentModal(${comment.id})|">
-                                    수정
-                                </button>
-                                <button class="btn btn-danger btn-sm" th:onclick="|deleteComment(${comment.id})|">삭제
-                                </button>
+                                <button class="btn btn-primary btn-sm"
+                                        th:onclick="|updateCommentModal(${comment.id})|">수정</button>
+                                <button class="btn btn-danger btn-sm"
+                                        th:onclick="|deleteComment(${comment.id})|">삭제</button>
                             </div>
                         </div>
                     </li>
@@ -87,9 +86,8 @@
     </div>
 
     <script th:inline="javascript">
+
         function deleteBoard(boardId) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
 
             if (confirm("게시글을 삭제하시겠습니까?")) {
                 $.ajax({
@@ -114,18 +112,15 @@
         function postComment() {
             var boardId = [[${board.id}]];
             var comment = $('#commentInput').val();
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
 
             $.ajax({
                 url: '/boards/' + boardId,
                 type: 'POST',
                 data: JSON.stringify({content: comment}),
-                beforeSend: function (xhr) {
-                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                    xhr.setRequestHeader(header, token);
-                },
                 contentType: 'application/json',
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem('token') // 로컬 스토리지에서 토큰을 가져와 헤더에 추가
+                },
                 success: function (data) {
                     alert('댓글이 추가 되었습니다.');
                     location.reload();
@@ -147,16 +142,11 @@
 
         function updateComment() {
             var updatedComment = $('#updatedCommentInput').val();
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
 
             $.ajax({
                 url: '/comments/' + window.commentIdToUpdate,
                 type: 'PATCH',
                 data: JSON.stringify({content: updatedComment}),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
                 contentType: 'application/json',
                 success: function (data) {
                     alert('댓글이 성공적으로 수정되었습니다.');
@@ -172,16 +162,10 @@
 
     <script th:inline="javascript">
         function deleteComment(commentId) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
             if (confirm("댓글을 삭제하시겠습니까?")) {
                 $.ajax({
                     url: '/comments/' + commentId,
                     type: 'DELETE',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(header, token);
-                    },
                     success: function (data) {
                         alert('댓글이 삭제되었습니다.');
                         location.reload();

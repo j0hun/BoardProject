@@ -36,9 +36,9 @@ public class BoardService {
         return boardResponseDTOList;
     }
 
-    @Transactional(readOnly = true)
     public BoardResponseDTO findBoardById(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        board.view();
         BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(board);
         return boardResponseDTO;
     }
@@ -49,15 +49,9 @@ public class BoardService {
         return boardPage.map(board -> BoardResponseDTO.toDTO(board));
     }
 
-    @Transactional
-    public void viewCountUp(Long boardId){
-        Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
-        board.view();
-    }
-
     public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String email) {
         Board board = boardRequestDTO.toEntity();
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmail(email).orElse(null);
         board.changeMember(member);
         Board savedBoard = boardRepository.save(board);
         BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(savedBoard);

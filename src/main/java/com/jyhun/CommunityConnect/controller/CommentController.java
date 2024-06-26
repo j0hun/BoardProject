@@ -6,9 +6,9 @@ import com.jyhun.CommunityConnect.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,8 +17,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/boards/{boardId}")
-    public ResponseEntity<CommentResponseDTO> postComment(@PathVariable Long boardId, @RequestBody CommentRequestDTO commentRequestDTO, Principal principal) {
-        String email = principal.getName();
+    public ResponseEntity<CommentResponseDTO> postComment(@PathVariable Long boardId, @RequestBody CommentRequestDTO commentRequestDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
         CommentResponseDTO commentResponseDTO = commentService.addComment(commentRequestDTO, boardId, email);
         return new ResponseEntity<>(commentResponseDTO, HttpStatus.CREATED);
     }

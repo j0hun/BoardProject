@@ -35,7 +35,7 @@ public class DataInit {
         private final PasswordEncoder passwordEncoder;
 
         public void dbInit() {
-            Member member = new Member("admin", "email@email.com", passwordEncoder.encode("password"), "address", Role.ADMIN);
+            Member member = new Member("admin", "admin@admin.com", passwordEncoder.encode("admin@admin.com"), Role.ADMIN);
             memberRepository.save(member);
             Board board = new Board("title", "content");
             board.changeMember(member);
