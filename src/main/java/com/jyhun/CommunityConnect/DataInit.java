@@ -44,11 +44,6 @@ public class DataInit {
             comment.changeBoard(board);
             comment.changeMember(member);
             commentRepository.save(comment);
-            for (int i = 1; i <= 100; i++) {
-                Board b = new Board("title" + i, "content" + i);
-                b.changeMember(member);
-                boardRepository.save(b);
-            }
         }
     }
 
