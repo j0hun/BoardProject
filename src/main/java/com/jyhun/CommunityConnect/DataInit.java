@@ -1,12 +1,12 @@
 package com.jyhun.CommunityConnect;
 
-import com.jyhun.CommunityConnect.constant.Role;
-import com.jyhun.CommunityConnect.entity.Board;
-import com.jyhun.CommunityConnect.entity.Comment;
-import com.jyhun.CommunityConnect.entity.Member;
-import com.jyhun.CommunityConnect.repository.BoardRepository;
-import com.jyhun.CommunityConnect.repository.CommentRepository;
-import com.jyhun.CommunityConnect.repository.MemberRepository;
+import com.jyhun.CommunityConnect.domain.member.constant.Role;
+import com.jyhun.CommunityConnect.domain.board.entity.Board;
+import com.jyhun.CommunityConnect.domain.comment.entity.Comment;
+import com.jyhun.CommunityConnect.domain.member.entity.Member;
+import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import com.jyhun.CommunityConnect.domain.comment.repository.CommentRepository;
+import com.jyhun.CommunityConnect.domain.comment.repository.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
