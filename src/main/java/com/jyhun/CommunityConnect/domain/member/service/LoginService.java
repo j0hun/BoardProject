@@ -2,7 +2,7 @@ package com.jyhun.CommunityConnect.domain.member.service;
 
 import com.jyhun.CommunityConnect.domain.member.dto.RegisterDTO;
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
-import com.jyhun.CommunityConnect.domain.comment.repository.MemberRepository;
+import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

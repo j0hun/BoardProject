@@ -6,7 +6,7 @@ import com.jyhun.CommunityConnect.domain.comment.entity.Comment;
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
 import com.jyhun.CommunityConnect.domain.comment.repository.CommentRepository;
-import com.jyhun.CommunityConnect.domain.comment.repository.MemberRepository;
+import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

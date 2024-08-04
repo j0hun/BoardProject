@@ -1,5 +1,4 @@
-package com.jyhun.CommunityConnect;
-
+package com.jyhun.CommunityConnect.domain.member.controller;
 
 import com.jyhun.CommunityConnect.domain.member.dto.LoginDTO;
 import com.jyhun.CommunityConnect.domain.member.dto.RegisterDTO;
@@ -8,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class PageController {
+public class LoginPageController {
 
     @GetMapping("/")
     public String main(){

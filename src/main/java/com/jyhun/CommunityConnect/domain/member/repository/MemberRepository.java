@@ -1,4 +1,4 @@
-package com.jyhun.CommunityConnect.domain.comment.repository;
+package com.jyhun.CommunityConnect.domain.member.repository;
 
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
 import org.springframework.data.domain.Page;

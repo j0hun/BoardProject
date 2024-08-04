@@ -7,7 +7,7 @@ import com.jyhun.CommunityConnect.domain.member.entity.Member;
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
 import com.jyhun.CommunityConnect.domain.comment.repository.CommentRepository;
-import com.jyhun.CommunityConnect.domain.comment.repository.MemberRepository;
+import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

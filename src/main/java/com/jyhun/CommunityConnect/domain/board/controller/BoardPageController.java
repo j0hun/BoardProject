@@ -23,7 +23,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/boards")
-public class BoardController {
+public class BoardPageController {
 
     private final BoardService boardService;
     private final CommentService commentService;

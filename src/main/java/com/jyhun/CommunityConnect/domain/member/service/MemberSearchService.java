@@ -3,7 +3,7 @@ package com.jyhun.CommunityConnect.domain.member.service;
 import com.jyhun.CommunityConnect.domain.member.dto.MemberResponseDTO;
 import com.jyhun.CommunityConnect.domain.member.dto.MemberResultDTO;
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
-import com.jyhun.CommunityConnect.domain.comment.repository.MemberRepository;
+import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

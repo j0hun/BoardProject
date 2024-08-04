@@ -4,7 +4,7 @@ import com.jyhun.CommunityConnect.domain.board.dto.BoardResponseDTO;
 import com.jyhun.CommunityConnect.domain.board.dto.BoardSearchDTO;
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
-import com.jyhun.CommunityConnect.domain.comment.repository.MemberRepository;
+import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import com.jyhun.CommunityConnect.domain.board.dto.BoardRequestDTO;
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import jakarta.persistence.EntityNotFoundException;
