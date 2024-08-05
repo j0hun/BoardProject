@@ -14,9 +14,11 @@ public interface BoardRepository extends JpaRepository<Board,Long>, BoardReposit
     int updateViewCount(@Param("boardId") Long boardId);
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT b FROM Board b where b.id = :id")
-    Board findByWithPessimisticLock(Long id);
+    @Query("SELECT b FROM Board b where b.id = :boardId")
+    Board findByWithPessimisticLock(@Param("boardId") Long boardId);
 
-
+    @Lock(value = LockModeType.OPTIMISTIC)
+    @Query("SELECT b FROM Board b where b.id = :boardId")
+    Board findByWithOptimisticLock(@Param("boardId") Long boardId);
 
 }
