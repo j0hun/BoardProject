@@ -48,7 +48,6 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         return null;
     }
 
-
     @Override
     public Page<Board> findBoardPage(BoardSearchDTO boardSearchDTO, Pageable pageable) {
         List<Board> results = queryFactory

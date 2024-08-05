@@ -36,10 +36,6 @@ public class BoardService {
         return boardResponseDTOList;
     }
 
-    public void view(Long boardId){
-        boardRepository.updateViewCount(boardId);
-    }
-
     @Transactional(readOnly = true)
     public BoardResponseDTO findBoardById(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);

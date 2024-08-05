@@ -1,0 +1,20 @@
+package com.jyhun.CommunityConnect.domain.board.service.view;
+
+import com.jyhun.CommunityConnect.domain.board.entity.Board;
+import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@RequiredArgsConstructor
+@Service
+public class SynchronizedBoardViewService implements BoardViewService {
+
+    private final BoardRepository boardRepository;
+
+    @Override
+    public synchronized void view(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        board.updateView(1);
+        boardRepository.saveAndFlush(board);
+    }
+}

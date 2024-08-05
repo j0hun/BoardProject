@@ -40,8 +40,8 @@ public class Board extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void view(){
-        this.viewCount+=1;
+    public void updateView(int count){
+        this.viewCount += count;
     }
 
     public void changeMember(Member member) {
