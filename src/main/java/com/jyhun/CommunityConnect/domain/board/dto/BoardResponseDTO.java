@@ -16,7 +16,7 @@ public class BoardResponseDTO {
     private Long id;
     private String title;
     private String content;
-    private int viewCount;
+    private Long viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String memberName;

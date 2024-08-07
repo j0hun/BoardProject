@@ -2,6 +2,7 @@ package com.jyhun.CommunityConnect.domain.board.controller;
 
 import com.jyhun.CommunityConnect.domain.board.dto.BoardResponseDTO;
 import com.jyhun.CommunityConnect.domain.board.dto.BoardSearchDTO;
+import com.jyhun.CommunityConnect.domain.board.service.view.BoardViewService;
 import com.jyhun.CommunityConnect.domain.comment.dto.CommentResponseDTO;
 import com.jyhun.CommunityConnect.domain.board.service.BoardService;
 import com.jyhun.CommunityConnect.domain.comment.service.CommentService;
@@ -26,6 +27,7 @@ import java.util.List;
 public class BoardPageController {
 
     private final BoardService boardService;
+    private final BoardViewService boardViewService;
     private final CommentService commentService;
 
     @GetMapping
@@ -39,6 +41,7 @@ public class BoardPageController {
 
     @GetMapping("/{boardId}")
     public String getBoard(@PathVariable Long boardId, Model model) {
+        boardViewService.view(boardId);
         BoardResponseDTO board = boardService.findBoardById(boardId);
         List<CommentResponseDTO> comments = commentService.findCommentsByBoardId(boardId);
         model.addAttribute("comments",comments);

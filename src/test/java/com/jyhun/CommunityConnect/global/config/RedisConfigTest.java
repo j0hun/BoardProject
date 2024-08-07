@@ -11,7 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Import(RedisConfig.class)
+@Import( RedisConfig.class)
 public class RedisConfigTest {
 
     @Value("${spring.data.redis.host}")

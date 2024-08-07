@@ -25,7 +25,7 @@ public class Board extends BaseTimeEntity {
 
     private String content;
 
-    private int viewCount;
+    private Long viewCount;
     
     /* OptimisticLock 경우에 사용
     @Version
@@ -43,9 +43,10 @@ public class Board extends BaseTimeEntity {
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
+        this.viewCount = 0L;
     }
 
-    public void updateView(int count){
+    public void increaseView(Long count){
         this.viewCount += count;
     }
 

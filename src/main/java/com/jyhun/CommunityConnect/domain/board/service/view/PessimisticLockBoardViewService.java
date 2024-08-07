@@ -16,7 +16,7 @@ public class PessimisticLockBoardViewService implements BoardViewService{
     @Override
     public void view(Long id) {
         Board board = boardRepository.findByWithPessimisticLock(id);
-        board.updateView(1);
+        board.increaseView(1L);
         boardRepository.saveAndFlush(board);
     }
 }

@@ -14,7 +14,7 @@ public class SynchronizedBoardViewService implements BoardViewService {
     @Override
     public synchronized void view(Long id) {
         Board board = boardRepository.findById(id).orElseThrow();
-        board.updateView(1);
+        board.increaseView(1L);
         boardRepository.saveAndFlush(board);
     }
 }

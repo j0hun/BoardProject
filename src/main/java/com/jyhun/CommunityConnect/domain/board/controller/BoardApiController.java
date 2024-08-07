@@ -19,8 +19,8 @@ public class BoardApiController {
 
     @GetMapping("/api/boards/{id}")
     public ResponseEntity<Void> getBoard(@PathVariable Long id){
-        boardService.findBoardById(id);
         boardViewService.view(id);
+        boardService.findBoardById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

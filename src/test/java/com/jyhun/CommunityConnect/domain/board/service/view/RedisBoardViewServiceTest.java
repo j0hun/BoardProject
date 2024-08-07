@@ -4,6 +4,7 @@ import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,13 +15,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @SpringBootTest
-class OptimisticLockBoardViewServiceTest {
+@Transactional
+class RedisBoardViewServiceTest {
 
     @Autowired
-    private OptimisticLockBoardViewService viewService;
+    private RedisBoardViewService viewService;
 
     @Autowired
     private BoardRepository boardRepository;
@@ -38,30 +40,32 @@ class OptimisticLockBoardViewServiceTest {
 
     @Test
     void view() throws InterruptedException {
-        viewService.updateViewWithRetry(1L);
+        viewService.view(1L);
+        Thread.sleep(6000); // DB에 60초후 저장되기때문에 60초 멈춤
         Board board = boardRepository.findById(1L).orElseThrow();
         assertThat(board.getViewCount()).isEqualTo(1);
     }
 
     @Test
-    void OptimisticLock_동시에_100개_요청() throws InterruptedException {
+    @DisplayName("Redis 동시에 100개 요청")
+    void Redis_request_100_AtTheSameTime() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch latch = new CountDownLatch(100);
-
-        for (int i = 0; i < 100; i++) {
+        for(int i=0;i<100;i++) {
             executorService.submit(() -> {
-                try {
-                    viewService.updateViewWithRetry(1L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
+                try{
+                    viewService.view(1L);
+                }finally {
                     latch.countDown();
                 }
             });
         }
-        latch.await();
 
+        latch.await();
+        Thread.sleep(6000); // DB에 60초후 저장되기때문에 60초 멈춤
         Board board = boardRepository.findById(1L).orElseThrow();
-        assertThat(board.getViewCount()).isNotEqualTo(100);
+        assertThat(board.getViewCount()).isNotEqualTo(100); // 레디스에 락이없기때문에 조회수 100이 나오지않음
+
     }
+
 }
