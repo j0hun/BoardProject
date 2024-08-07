@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 @Import( RedisConfig.class)
 public class RedisConfigTest {
@@ -42,7 +44,7 @@ public class RedisConfigTest {
 
         redisTemplate.opsForValue().set(key, value);
         String retrievedValue = (String) redisTemplate.opsForValue().get(key);
-
         assertThat(retrievedValue).isEqualTo(value);
+        redisTemplate.delete(key);
     }
 }

@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -62,9 +61,9 @@ class RedisBoardViewServiceTest {
         }
 
         latch.await();
-        Thread.sleep(6000); // DB에 60초후 저장되기때문에 60초 멈춤
+        Thread.sleep(6000);
         Board board = boardRepository.findById(1L).orElseThrow();
-        assertThat(board.getViewCount()).isNotEqualTo(100); // 레디스에 락이없기때문에 조회수 100이 나오지않음
+        assertThat(board.getViewCount()).isEqualTo(100);
 
     }
 
