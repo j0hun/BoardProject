@@ -1,19 +1,22 @@
-package com.jyhun.CommunityConnect.domain.board.service.view;
+package com.jyhun.CommunityConnect.domain.board.service.view.archive;
 
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import com.jyhun.CommunityConnect.domain.board.service.view.BoardViewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class SynchronizedBoardViewService implements BoardViewService {
+public class PessimisticLockBoardViewService implements BoardViewService {
 
     private final BoardRepository boardRepository;
 
+    @Transactional
     @Override
-    public synchronized void view(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow();
+    public void view(Long id) {
+        Board board = boardRepository.findByWithPessimisticLock(id);
         board.increaseView(1L);
         boardRepository.saveAndFlush(board);
     }

@@ -4,6 +4,7 @@ import com.jyhun.CommunityConnect.domain.board.dto.BoardRequestDTO;
 import com.jyhun.CommunityConnect.domain.board.service.BoardService;
 import com.jyhun.CommunityConnect.domain.board.service.view.BoardViewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,12 @@ public class BoardApiController {
     public ResponseEntity<Void> getBoard(@PathVariable Long id){
         boardViewService.view(id);
         boardService.findBoardById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/api/board/popular")
+    public ResponseEntity<Void> getBoardPopular(Pageable pageable) {
+        boardService.findBoardsPopular(pageable);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

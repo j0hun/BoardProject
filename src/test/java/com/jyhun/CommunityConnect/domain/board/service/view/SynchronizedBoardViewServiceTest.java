@@ -2,6 +2,7 @@ package com.jyhun.CommunityConnect.domain.board.service.view;
 
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import com.jyhun.CommunityConnect.domain.board.service.view.archive.SynchronizedBoardViewService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

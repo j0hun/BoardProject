@@ -1,21 +1,18 @@
 package com.jyhun.CommunityConnect.domain.board.service;
 
+import com.jyhun.CommunityConnect.domain.board.dto.BoardRequestDTO;
 import com.jyhun.CommunityConnect.domain.board.dto.BoardResponseDTO;
 import com.jyhun.CommunityConnect.domain.board.dto.BoardSearchDTO;
-import com.jyhun.CommunityConnect.domain.member.entity.Member;
-import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
-import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
-import com.jyhun.CommunityConnect.domain.board.dto.BoardRequestDTO;
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
+import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import com.jyhun.CommunityConnect.domain.member.entity.Member;
+import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -24,17 +21,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-
-    @Transactional(readOnly = true)
-    public List<BoardResponseDTO> findBoards(){
-        List<Board> boardList = boardRepository.findAll();
-        List<BoardResponseDTO> boardResponseDTOList = new ArrayList<>();
-        for (Board board : boardList) {
-            BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(board);
-            boardResponseDTOList.add(boardResponseDTO);
-        }
-        return boardResponseDTOList;
-    }
 
     @Transactional(readOnly = true)
     public BoardResponseDTO findBoardById(Long boardId) {
@@ -71,4 +57,9 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
+    public Page<BoardResponseDTO> findBoardsPopular(Pageable pageable) {
+
+        Page<Board> boardPopularPage = boardRepository.findBoardPopular(pageable);
+        return boardPopularPage.map(board -> BoardResponseDTO.toDTO(board));
+    }
 }

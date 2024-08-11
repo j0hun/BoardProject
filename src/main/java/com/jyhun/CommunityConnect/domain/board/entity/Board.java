@@ -1,5 +1,6 @@
 package com.jyhun.CommunityConnect.domain.board.entity;
 
+import com.jyhun.CommunityConnect.domain.category.entity.Category;
 import com.jyhun.CommunityConnect.domain.comment.entity.Comment;
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
 import com.jyhun.CommunityConnect.global.common.BaseTimeEntity;
@@ -33,6 +34,10 @@ public class Board extends BaseTimeEntity {
     */
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -48,6 +53,13 @@ public class Board extends BaseTimeEntity {
 
     public void increaseView(Long count){
         this.viewCount += count;
+    }
+
+    public void changeCategory(Category category){
+        this.category = category;
+        if(category != null) {
+            category.getBoardList().add(this);
+        }
     }
 
     public void changeMember(Member member) {

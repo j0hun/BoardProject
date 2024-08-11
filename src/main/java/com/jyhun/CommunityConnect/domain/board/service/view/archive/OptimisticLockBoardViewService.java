@@ -1,7 +1,8 @@
-package com.jyhun.CommunityConnect.domain.board.service.view;
+package com.jyhun.CommunityConnect.domain.board.service.view.archive;
 
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import com.jyhun.CommunityConnect.domain.board.service.view.BoardViewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

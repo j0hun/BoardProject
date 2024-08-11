@@ -2,7 +2,6 @@ package com.jyhun.CommunityConnect.domain.board.repository;
 
 import com.jyhun.CommunityConnect.domain.board.dto.BoardSearchDTO;
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
-import com.jyhun.CommunityConnect.domain.board.entity.QBoard;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -13,6 +12,8 @@ import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.jyhun.CommunityConnect.domain.board.entity.QBoard.board;
 
 public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
@@ -36,14 +37,18 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         }else if(StringUtils.equals("6m",searchDateType)) {
             dateTime = dateTime.minusMonths(6);
         }
-        return QBoard.board.createdAt.after(dateTime);
+        return board.createdAt.after(dateTime);
+    }
+
+    private BooleanExpression viewCountGreaterThan(Long viewCount){
+        return viewCount != null ? board.viewCount.gt(viewCount) : null;
     }
 
     private BooleanExpression searchByLike(String searchBy, String searchQuery) {
         if(StringUtils.equals("boardTitle",searchBy)) {
-            return QBoard.board.title.like("%" + searchQuery + "%");
+            return board.title.like("%" + searchQuery + "%");
         }else if (StringUtils.equals("createdBy", searchBy)) {
-            return QBoard.board.member.name.like("%" + searchQuery + "%");
+            return board.member.name.like("%" + searchQuery + "%");
         }
         return null;
     }
@@ -51,21 +56,39 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     @Override
     public Page<Board> findBoardPage(BoardSearchDTO boardSearchDTO, Pageable pageable) {
         List<Board> results = queryFactory
-                .selectFrom(QBoard.board)
+                .selectFrom(board)
                 .where(regDtsAfter(boardSearchDTO.getSearchDateType()),
                         searchByLike(boardSearchDTO.getSearchBy(), boardSearchDTO.getSearchQuery()))
-                .orderBy(QBoard.board.id.desc())
+                .orderBy(board.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         Long total = queryFactory
-                .select(QBoard.board.count())
-                .from(QBoard.board)
+                .select(board.count())
+                .from(board)
                 .where(regDtsAfter(boardSearchDTO.getSearchDateType()),
                         searchByLike(boardSearchDTO.getSearchBy(), boardSearchDTO.getSearchQuery()))
                 .fetchOne();
 
         return new PageImpl<>(results,pageable,total);
+    }
+
+    @Override
+    public Page<Board> findBoardPopular(Pageable pageable) {
+        List<Board> results = queryFactory
+                .selectFrom(board)
+                .where(viewCountGreaterThan(100L))
+                .orderBy(board.createdAt.desc())
+                .fetch();
+
+        Long total = queryFactory
+                .select(board.count())
+                .from(board)
+                .where(viewCountGreaterThan(100L))
+                .orderBy(board.createdAt.desc())
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable,total);
     }
 }
