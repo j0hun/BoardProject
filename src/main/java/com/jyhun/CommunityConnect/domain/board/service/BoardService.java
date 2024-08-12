@@ -64,4 +64,9 @@ public class BoardService {
         Page<Board> boardPopularPage = boardRepository.findBoardPopular(pageable);
         return boardPopularPage.map(board -> BoardResponseDTO.toDTO(board));
     }
+
+    public void incrementLikeCount(Long boardId){
+        boardRepository.updateLikeCount(boardId);
+    }
+
 }

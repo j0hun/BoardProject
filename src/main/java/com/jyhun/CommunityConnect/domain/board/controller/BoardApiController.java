@@ -33,6 +33,12 @@ public class BoardApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/api/boards/{boardId}/likes")
+    public ResponseEntity<Void> likeBoard(@PathVariable Long boardId){
+        boardService.incrementLikeCount(boardId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 //    @GetMapping("/api/board/popular")
 //    public ResponseEntity<Void> getBoardPopular(Pageable pageable) {
 //        boardService.findBoardsPopular(pageable);

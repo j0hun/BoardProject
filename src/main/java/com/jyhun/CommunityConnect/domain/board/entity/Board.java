@@ -28,6 +28,8 @@ public class Board extends BaseTimeEntity {
 
     private Long viewCount;
 
+    private Long likeCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -44,6 +46,7 @@ public class Board extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.viewCount = 0L;
+        this.likeCount = 0L;
     }
 
     public void increaseView(Long count){
