@@ -27,11 +27,6 @@ public class Board extends BaseTimeEntity {
     private String content;
 
     private Long viewCount;
-    
-    /* OptimisticLock 경우에 사용
-    @Version
-    private Long version;
-    */
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

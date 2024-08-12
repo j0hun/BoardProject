@@ -25,17 +25,6 @@ public class CommentService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional(readOnly = true)
-    public List<CommentResponseDTO> findCommentsByBoardId(Long boardId){
-        List<Comment> commentList = commentRepository.findAllByBoardId(boardId);
-        List<CommentResponseDTO> commentResponseDTOList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            CommentResponseDTO commentResponseDTO = CommentResponseDTO.toDTO(comment);
-            commentResponseDTOList.add(commentResponseDTO);
-        }
-        return commentResponseDTOList;
-    }
-
     public CommentResponseDTO addComment(CommentRequestDTO commentRequestDTO, Long boardId, String email) {
         Comment comment = commentRequestDTO.toEntity();
         Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);

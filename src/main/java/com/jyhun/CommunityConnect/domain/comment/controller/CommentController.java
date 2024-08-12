@@ -16,7 +16,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/boards/{boardId}")
+    @PostMapping("/api/boards/{boardId}/comments")
     public ResponseEntity<CommentResponseDTO> postComment(@PathVariable Long boardId, @RequestBody CommentRequestDTO commentRequestDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -24,13 +24,13 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDTO, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/comments/{commentId}")
+    @PatchMapping("/api/comments/{commentId}")
     public ResponseEntity<CommentResponseDTO> patchComment(@PathVariable Long commentId, @RequestBody CommentRequestDTO commentRequestDTO) {
         CommentResponseDTO commentResponseDTO = commentService.modifyComment(commentRequestDTO, commentId);
         return new ResponseEntity<>(commentResponseDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/api/comments/{commentId}")
     public ResponseEntity<CommentResponseDTO> deleteComment(@PathVariable Long commentId) {
         CommentResponseDTO commentResponseDTO = commentService.removeComment(commentId);
         return new ResponseEntity<>(commentResponseDTO, HttpStatus.NO_CONTENT);

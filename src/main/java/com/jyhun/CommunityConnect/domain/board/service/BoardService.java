@@ -5,6 +5,8 @@ import com.jyhun.CommunityConnect.domain.board.dto.BoardResponseDTO;
 import com.jyhun.CommunityConnect.domain.board.dto.BoardSearchDTO;
 import com.jyhun.CommunityConnect.domain.board.entity.Board;
 import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import com.jyhun.CommunityConnect.domain.category.entity.Category;
+import com.jyhun.CommunityConnect.domain.category.repository.CategoryRepository;
 import com.jyhun.CommunityConnect.domain.member.entity.Member;
 import com.jyhun.CommunityConnect.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BoardService {
 
+    private final CategoryRepository categoryRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
@@ -35,21 +38,20 @@ public class BoardService {
         return boardPage.map(board -> BoardResponseDTO.toDTO(board));
     }
 
-    public BoardResponseDTO addBoard(BoardRequestDTO boardRequestDTO,String email) {
+    public Long addBoard(BoardRequestDTO boardRequestDTO,Long categoryId, String email) {
         Board board = boardRequestDTO.toEntity();
-        Member member = memberRepository.findByEmail(email).orElse(null);
+        Category category = categoryRepository.findById(categoryId).orElseThrow();
+        Member member = memberRepository.findByEmail(email).orElseThrow();
+        board.changeCategory(category);
         board.changeMember(member);
         Board savedBoard = boardRepository.save(board);
-        BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(savedBoard);
-        return boardResponseDTO;
+        return savedBoard.getId();
     }
 
-    public BoardResponseDTO modifyBoard(BoardRequestDTO boardRequestDTO,Long boardId) {
+    public void modifyBoard(BoardRequestDTO boardRequestDTO,Long boardId) {
         Board board = boardRequestDTO.toEntity();
         Board foundBoard = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
         foundBoard.updateBoard(board);
-        BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(foundBoard);
-        return boardResponseDTO;
     }
 
     public void removeBoard(Long boardId){

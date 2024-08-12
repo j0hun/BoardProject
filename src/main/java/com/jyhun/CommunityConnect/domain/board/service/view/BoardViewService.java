@@ -1,7 +1,19 @@
 package com.jyhun.CommunityConnect.domain.board.service.view;
 
-public interface BoardViewService {
+import com.jyhun.CommunityConnect.domain.board.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-    void view(Long id);
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class BoardViewService {
+
+    private final BoardRepository boardRepository;
+
+    public void view(Long boardId){
+        boardRepository.updateViewCount(boardId);
+    }
 
 }
