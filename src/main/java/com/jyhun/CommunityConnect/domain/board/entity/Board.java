@@ -48,11 +48,6 @@ public class Board extends BaseTimeEntity {
         this.viewCount = 0L;
         this.likeCount = 0L;
     }
-
-    public void increaseView(Long count){
-        this.viewCount += count;
-    }
-
     public void changeCategory(Category category){
         this.category = category;
         if(category != null) {
