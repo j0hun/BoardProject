@@ -15,7 +15,7 @@ public class CommentResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long boardId;
-    private String memberName;
+    private String author;
 
     public static CommentResponseDTO toDTO(Comment comment) {
         CommentResponseDTO commentResponseDTO = new CommentResponseDTO();
@@ -24,7 +24,7 @@ public class CommentResponseDTO {
         commentResponseDTO.setCreatedAt(comment.getCreatedAt());
         commentResponseDTO.setUpdatedAt(comment.getUpdatedAt());
         commentResponseDTO.setBoardId(comment.getBoard().getId());
-        commentResponseDTO.setMemberName(comment.getMember().getName());
+        commentResponseDTO.setAuthor(comment.getMember().getName());
         return commentResponseDTO;
     }
 

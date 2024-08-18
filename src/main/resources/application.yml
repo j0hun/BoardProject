@@ -13,7 +13,7 @@ spring:
         default_batch_fetch_size: 1000
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   data:
     redis:
       port: 6379

@@ -19,7 +19,7 @@ public class BoardResponseDTO {
     private Long viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String memberName;
+    private String author;
     private List<CommentResponseDTO> commentResponseDTOList;
 
     public static BoardResponseDTO toDTO(Board board){
@@ -30,7 +30,7 @@ public class BoardResponseDTO {
         boardResponseDTO.setViewCount(board.getViewCount());
         boardResponseDTO.setCreatedAt(board.getCreatedAt());
         boardResponseDTO.setUpdatedAt(board.getUpdatedAt());
-        boardResponseDTO.setMemberName(board.getMember().getName());
+        boardResponseDTO.setAuthor(board.getMember().getName());
         if (board.getCommentList() != null) {
             boardResponseDTO.setCommentResponseDTOList(
                     board.getCommentList().stream()

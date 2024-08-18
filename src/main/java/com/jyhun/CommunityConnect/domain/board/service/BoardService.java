@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,10 +36,23 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardResponseDTO> findBoardPage(BoardSearchDTO boardSearchDTO, Pageable pageable) {
-        Page<Board> boardPage = boardRepository.findBoardPage(boardSearchDTO, pageable);
+    public List<BoardResponseDTO> findBoardsCategoryPage(Long categoryId){
+        List<Board> boardList = boardRepository.findAll();
+        List<BoardResponseDTO> boardResponseDTOList = new ArrayList<>();
+        for (Board board : boardList) {
+            BoardResponseDTO boardResponseDTO = BoardResponseDTO.toDTO(board);
+            boardResponseDTOList.add(boardResponseDTO);
+        }
+        return boardResponseDTOList;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardResponseDTO> findBoardPage(BoardSearchDTO boardSearchDTO,Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findBoardPage(boardSearchDTO,pageable);
         return boardPage.map(board -> BoardResponseDTO.toDTO(board));
     }
+
+
 
     public Long addBoard(BoardRequestDTO boardRequestDTO,Long categoryId, String email) {
         Board board = boardRequestDTO.toEntity();
